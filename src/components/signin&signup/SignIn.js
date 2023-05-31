@@ -33,13 +33,13 @@ const SignIn = () => {
         `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${API_KEY}`,
         postData
       )
-      .then(() => navigate("/home", { replace: true }))
+      .then(() => navigate("/dashboard", { replace: true }))
       .catch((err) => alert(err.response.data.error.message));
   };
 
   return (
-    <ThemeProvider theme={defaultTheme}   >
-      <Container component="main" maxWidth="xs" >
+    <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
@@ -70,7 +70,7 @@ const SignIn = () => {
               autoComplete="email"
               type="email"
               autoFocus
-              sx={{background:"white"}}
+              sx={{ background: "white" }}
             />
             <TextField
               margin="normal"
@@ -80,22 +80,18 @@ const SignIn = () => {
               label="Password"
               type="password"
               autoComplete="current-password"
-              sx={{background:"white"}}
+              sx={{ background: "white" }}
             />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              
             >
               Sign In
             </Button>
             <Grid item>
-              <Link
-                style={{fontSize:"14px"}}
-                to={"/signup"}
-              >
+              <Link style={{ fontSize: "14px" }} to={"/signup"}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
