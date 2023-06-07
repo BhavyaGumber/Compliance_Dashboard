@@ -32,7 +32,7 @@ const headCells = [
   },
 ];
 
-const TableHeaders = () => {
+const FetchTableHeaders = () => {
   return (
     <TableHead>
       <TableRow>
@@ -66,4 +66,4 @@ const TableHeaders = () => {
   );
 };
 
-export default TableHeaders;
+export default FetchTableHeaders;

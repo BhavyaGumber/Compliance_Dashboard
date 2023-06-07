@@ -38,8 +38,9 @@ const SignIn = () => {
   };
 
   return (
+    <div style={{background:"#010819"}}>
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" sx={{background:"#03254c", borderRadius:"1rem"}}>
         <CssBaseline />
         <Box
           sx={{
@@ -52,7 +53,7 @@ const SignIn = () => {
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" sx={{color:"white"}}>
             Sign in
           </Typography>
           <Box
@@ -91,7 +92,7 @@ const SignIn = () => {
               Sign In
             </Button>
             <Grid item>
-              <Link style={{ fontSize: "14px" }} to={"/signup"}>
+              <Link style={{ fontSize: "14px",color:"white" }} to={"/signup"}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
@@ -101,7 +102,7 @@ const SignIn = () => {
           variant="body2"
           color="text.secondary"
           align="center"
-          sx={{ mt: 8 }}
+          sx={{ mt: 8,color:"white" }}
         >
           {"Copyright © "}
           Pace {new Date().getFullYear()}
@@ -109,6 +110,7 @@ const SignIn = () => {
         </Typography>
       </Container>
     </ThemeProvider>
+    </div>
   );
 };
 

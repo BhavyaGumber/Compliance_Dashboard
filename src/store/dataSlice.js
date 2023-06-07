@@ -274,9 +274,21 @@ const dataSlice = createSlice({
       }
     },
     addRows(state) {
-      state.BackEnd_Data = state.BackEnd_Data.concat(state.selectedRows);
+      const updatedSelectedRows = state.selectedRows.map(
+        (selectedRow, index) => {
+          const correspondingRow = state.BackEnd_Data[index];
+          if (correspondingRow) {
+            selectedRow.Name = correspondingRow.Name;
+            // selectedRow.Team = correspondingRow.Team;
+            // selectedRow.Id = correspondingRow.Id;
+          }
+          return selectedRow;
+        }
+      );
+
+      state.BackEnd_Data = state.BackEnd_Data.concat(updatedSelectedRows);
       state.Second_Data = state.Second_Data.filter((row) => {
-        return !state.selectedRows.some(
+        return !updatedSelectedRows.some(
           (selectedRow) => selectedRow.Abbr === row.Abbr
         );
       });

@@ -7,12 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
-import TableHeaders from "./TableHeaders";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import "./MainTable.css";
+import FetchTableHeaders from "./FetchTableHeaders";
 
-const MainTable = () => {
+const FetchTable = () => {
   const [inputValues, setInputValues] = useState([]);
 
   const BackEnd_Data = useSelector((state) => state.BackEnd_Data);
@@ -32,7 +30,7 @@ const MainTable = () => {
     }
 
     const isEmpty = inputValues.some((input) => {
-      return !input.MtoM;
+      return !input || !input.Abbr || !input.Quantity;
     });
 
     if (isEmpty) {
@@ -44,14 +42,9 @@ const MainTable = () => {
         return {
           Id: BackEnd_Data[index].Name,
           Alloted_Abbr: BackEnd_Data[index].Abbr,
-          Executed_Abbr:
-            input?.Abbr !== undefined ? input?.Abbr : BackEnd_Data[index].Abbr,
+          Executed_Abbr: input?.Abbr.toUpperCase(),
           Alloted_Qty: BackEnd_Data[index].Quantity,
-          Executed_Qty:
-            input?.Quantity !== undefined
-              ? input?.Quantity
-              : BackEnd_Data[index].Quantity,
-          MtoM: input?.MtoM,
+          Executed_Qty: input?.Quantity,
         };
       });
       console.log("Submitted Data:", submittedData);
@@ -62,14 +55,14 @@ const MainTable = () => {
   return (
     <>
       <Box sx={{ width: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2, height: "62.3vh" }}>
+        <Paper sx={{ width: "100%", mb: 2, height: "90vh" }}>
           <TableContainer sx={{ height: "100%" }}>
             <Table
               sx={{ minWidth: 750 }}
               aria-labelledby="tableTitle"
               size="small"
             >
-              <TableHeaders />
+              <FetchTableHeaders />
               <TableBody>
                 {BackEnd_Data.map((row, index) => {
                   return (
@@ -91,13 +84,9 @@ const MainTable = () => {
                       <TableCell align="center">
                         <input
                           style={{ width: "4.5rem" }}
-                          value={
-                            inputValues[index]?.Abbr !== undefined
-                              ? inputValues[index]?.Abbr
-                              : row.Abbr
-                          }
+                          value={inputValues[index]?.Abbr || ""}
                           onChange={(e) =>
-                            handleInputChange(index, "Abbr", e.target.value.toUpperCase())
+                            handleInputChange(index, "Abbr", e.target.value)
                           }
                           type="text"
                         />
@@ -106,31 +95,14 @@ const MainTable = () => {
                       <TableCell align="center">
                         <input
                           style={{ width: "4.5rem" }}
-                          value={
-                            inputValues[index]?.Quantity !== undefined
-                              ? inputValues[index]?.Quantity
-                              : row.Quantity
-                          }
+                          value={inputValues[index]?.Quantity || ""}
                           onChange={(e) =>
-                            handleInputChange(
-                              index,
-                              "Quantity",
-                              e.target.value
-                            )
+                            handleInputChange(index, "Quantity", e.target.value)
                           }
                           type="number"
                         />
                       </TableCell>
-                      <TableCell align="center">
-                        <input
-                          style={{ width: "4.5rem" }}
-                          value={inputValues[index]?.MtoM || ""}
-                          onChange={(e) =>
-                            handleInputChange(index, "MtoM", e.target.value)
-                          }
-                          type="number"
-                        />
-                      </TableCell>
+                      <TableCell align="center"></TableCell>
                     </TableRow>
                   );
                 })}
@@ -139,31 +111,18 @@ const MainTable = () => {
           </TableContainer>
         </Paper>
       </Box>
-      <div>
-        <Link to={"/dashboard/dataTable"}>
-          <Button
-            sx={{
-              ml: 2,
-            }}
-            variant="contained"
-          >
-            Fech Data
-          </Button>
-        </Link>
-
-        <Button
-          sx={{
-            float: "right",
-            mr: 2,
-          }}
-          variant="contained"
-          onClick={handleSubmit}
-        >
-          Submit
-        </Button>
-      </div>
+      <Button
+        sx={{
+          float: "right",
+          mr: 2,
+        }}
+        variant="contained"
+        onClick={handleSubmit}
+      >
+        Submit
+      </Button>
     </>
   );
 };
 
-export default MainTable;
+export default FetchTable;

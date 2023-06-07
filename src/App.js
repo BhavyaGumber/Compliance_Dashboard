@@ -4,6 +4,7 @@ import SignIn from "./components/signin&signup/SignIn";
 import SignUp from "./components/signin&signup/SignUp";
 import MainDash from "./components/homePage/MainDash";
 import SecondDash from "./components/secondDashboard/SecondDash";
+import MainFetchTable from "./components/FecthDataTable/MainFetchTable";
 function App() {
   return (
     <Routes>
@@ -18,12 +19,12 @@ function App() {
           </>
         }
       />
+      <Route path="/dashboard/dataTable" element={<MainFetchTable />} />
     </Routes>
   );
 }
 
 export default App;
-
 
 // import React, { useState } from "react";
 
@@ -93,4 +94,3 @@ export default App;
 // };
 
 // export default App;
-

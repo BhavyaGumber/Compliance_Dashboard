@@ -15,8 +15,11 @@ const SwitchUserButton = ({ userList }) => {
   };
 
   return (
-    <FormControl variant="filled" sx={{ m: 1, minWidth: 120 }}>
-      <InputLabel id="demo-simple-select-filled-label">Add User</InputLabel>
+    <FormControl
+      variant="filled"
+      sx={{ mt: 1, ml: 2, minWidth: 130}}
+    >
+      <InputLabel id="demo-simple-select-filled-label">Add Strategy</InputLabel>
       <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"

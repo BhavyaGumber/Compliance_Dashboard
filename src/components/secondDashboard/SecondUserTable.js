@@ -33,7 +33,7 @@ const SecondUserTable = () => {
       {isVisible && (
         <div>
           <Box sx={{ width: "100%" }}>
-            <Paper sx={{ width: "100%", mb: 2, height: "62.3vh" }}>
+            <Paper sx={{ width: "100%", mb: 2, height: "50vh" }}>
               <TableContainer sx={{ height: "100%" }}>
                 <Table
                   sx={{ minWidth: 750 }}
