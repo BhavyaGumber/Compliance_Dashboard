@@ -2,18 +2,56 @@ import React from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import { useState } from "react";
+import axios from "axios"
 import Select from "@mui/material/Select";
-import { useDispatch, useSelector } from "react-redux";
-import { dataSliceActions } from "../../store/dataSlice";
+import { useEffect,useRef } from "react";
 
-const SwitchUserButton = ({ userList }) => {
-  const dispatch = useDispatch();
-  const selectedValue = useSelector((state) => state.selectedValue);
+const SwitchUserButton = () => {
+  const [data,setData] = useState([]);
+  const selectedValueRef = useRef("");
 
-  const handleChange = (event) => {
-    dispatch(dataSliceActions.tableToggle(event.target.value));
+  // const dispatch = useDispatch();
+  // const selectedValue = useSelector((state) => state.selectedValue);
+
+  const [options,setOptions] = useState([])
+  useEffect(()=>{
+    fetchOptions()
+  },[])
+ 
+const fetchOptions = ()=>{
+  axios.get('/options').then((response)=>{
+    const {options} = response.data;
+    setOptions(options);
+    console.log(options)
+
+  }).catch((error)=>{
+    console.log(error)
+  })
+}
+  const handleFetchData = () => {
+   const selectedValue = selectedValueRef.current
+      console.log(selectedValue);
+    axios
+    .post('/fetch-data', { selectedValue })
+
+    .then((response) => {
+      const { data } = response.data;
+      setData(data);
+      console.log(data);
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
   };
 
+ 
+  const handleOptionChange = (event) => {
+    
+    const selectedValue = event.target.value;
+    selectedValueRef.current = selectedValue;
+    
+  };
   return (
     <FormControl
       variant="filled"
@@ -23,16 +61,18 @@ const SwitchUserButton = ({ userList }) => {
       <Select
         labelId="demo-simple-select-filled-label"
         id="demo-simple-select-filled"
-        value={selectedValue}
-        onChange={handleChange}
+      
+        onChange={handleOptionChange}
+        onClick={handleFetchData}
+       
       >
-        <MenuItem value="">
+        {/* <MenuItem value="">
           <em>none</em>
-        </MenuItem>
-        {userList.map((user, index) => {
+        </MenuItem> */}
+        {options.map((option, index) => {
           return (
-            <MenuItem key={index} value={user}>
-              {user}
+            <MenuItem key={option.id} value={option.id}>
+              {option.name}
             </MenuItem>
           );
         })}

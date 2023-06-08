@@ -1,4 +1,5 @@
 import "./App.css";
+import axios from "axios"
 import { Routes, Route } from "react-router-dom";
 import SignIn from "./components/signin&signup/SignIn";
 import SignUp from "./components/signin&signup/SignUp";
@@ -6,6 +7,7 @@ import MainDash from "./components/homePage/MainDash";
 import SecondDash from "./components/secondDashboard/SecondDash";
 import MainFetchTable from "./components/FecthDataTable/MainFetchTable";
 function App() {
+  axios.defaults.baseURL = "http://localhost:8080"
   return (
     <Routes>
       <Route path="/" element={<SignIn />} />
