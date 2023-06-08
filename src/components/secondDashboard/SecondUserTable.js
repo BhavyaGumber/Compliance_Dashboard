@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -13,11 +14,14 @@ import SecondUserHeaders from "./SecondUserHeaders";
 import { useSelector, useDispatch } from "react-redux";
 import { dataSliceActions } from "../../store/dataSlice";
 
+
 const SecondUserTable = () => {
   const dispatch = useDispatch();
-  const { Second_Data, isVisible } = useSelector((state) => ({
+  const userId = useSelector(state=>state.userId)
+  const { Second_Data, isVisible,selectedRows } = useSelector((state) => ({
     Second_Data: state.Second_Data,
     isVisible: state.isVisible,
+    selectedRows:state.selectedRows
   }));
 
   const handleCheckboxChange = (event, row) => {
@@ -25,8 +29,15 @@ const SecondUserTable = () => {
     dispatch(dataSliceActions.checkBoxHandler({ isChecked, row }));
   };
 
-  const addRowHandler = () => {
+  const addRowHandler = async () => {
     dispatch(dataSliceActions.addRows());
+    try {
+      await axios.post(`/api/data/${userId}`, { selectedRows });
+      console.log('Selected rows saved successfully');
+    } catch (error) {
+      console.log('Error saving selected rows:', error);
+    }
+
   };
   return (
     <>

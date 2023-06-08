@@ -101,6 +101,45 @@ app.post('/fetch-data', async (req, res) => {
   console.log(selectedValue)
 });
 
+app.post('/api/data/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const { selectedRows } = req.body;
+  console.log(selectedRows);
+
+  try {
+    // Fetch the user's existing data from the database
+    const dataDoc = await Data.findOne({ _id:userId });
+    console.log(dataDoc)
+
+    if (!dataDoc) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+  
+    const updatedItems = selectedRows.map(row => {
+      return {
+        id: row.id||1,
+        name: row.name || "bhavya",
+        team: row.team || "bhavya",
+        Strategy_Type: row.Strategy_Type,
+        Abbr: row.Abbr,
+        Inst_Name: row.Inst_Name,
+        Quantity: row.Quantity
+      };
+    });
+
+    dataDoc.items = [...dataDoc.items, ...updatedItems];
+    await dataDoc.save();
+    console.log(dataDoc)
+   
+
+    res.json({ message: 'Selected rows saved successfully' });
+  } catch (error) {
+    console.log('Error saving selected rows:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 
 
 

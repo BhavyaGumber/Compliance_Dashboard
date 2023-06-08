@@ -248,6 +248,7 @@ const initialState = {
   selectedValue: "",
   isVisible: false,
   selectedRows: [],
+  userId:null
 };
 const dataSlice = createSlice({
   name: "data",
@@ -296,6 +297,10 @@ const dataSlice = createSlice({
       state.isVisible = false;
       state.selectedValue = "";
       state.selectedRows = [];
+    },
+    setUserId: (state, action) => {
+      state.userId = action.payload;
+      console.log(action.payload)
     },
   },
 });

@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch, useSelector} from "react-redux";
+
+import { dataSliceActions } from "../../store/dataSlice";
 import axios from "axios";
 import {
   Avatar,
@@ -16,7 +19,9 @@ import { useNavigate } from "react-router-dom";
 const defaultTheme = createTheme();
 
 const SignIn = () => {
+  const userId = useSelector(state=>state.userId)
   const [loginError, setLoginError] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const users = [
     { username: "2023", password: "123456" },
@@ -33,14 +38,22 @@ const SignIn = () => {
     axios
       .post('/login', { currentUser, currentPassword })
       .then((response) => {
-        const data = response.data;
-        console.log(data);
-        if (data.error) {
+        const responseData = response.data;
+       
+      
+        if (responseData.error) {
         alert("error")
         } else {
+            // const dispatch = useDispatch();
+            const userId = responseData.data[0]._id
+            console.log(userId)
+          dispatch(dataSliceActions.setUserId(userId));
+          
+        
           // Redirect to the dashboard page or display a success message
           navigate("/dashboard")
         }
+       
       })
       .catch((error) => {
         alert("error")
