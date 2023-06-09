@@ -18,8 +18,8 @@ import { dataSliceActions } from "../../store/dataSlice";
 const SecondUserTable = () => {
   const dispatch = useDispatch();
   const userId = useSelector(state=>state.userId)
-  const { Second_Data, isVisible,selectedRows } = useSelector((state) => ({
-    Second_Data: state.Second_Data,
+  const { Absent_Data, isVisible,selectedRows } = useSelector((state) => ({
+    Absent_Data: state.Absent_Data,
     isVisible: state.isVisible,
     selectedRows:state.selectedRows
   }));
@@ -32,7 +32,8 @@ const SecondUserTable = () => {
   const addRowHandler = async () => {
     dispatch(dataSliceActions.addRows());
     try {
-      await axios.post(`/api/data/${userId}`, { selectedRows });
+      const uId = localStorage.getItem('uId');
+      await axios.post(`/api/data/${uId}`, { selectedRows });
       console.log('Selected rows saved successfully');
     } catch (error) {
       console.log('Error saving selected rows:', error);
@@ -53,7 +54,7 @@ const SecondUserTable = () => {
                 >
                   <SecondUserHeaders />
                   <TableBody>
-                    {Second_Data.map((row, ind) => {
+                    {Absent_Data.map((row, ind) => {
                       return (
                         <TableRow key={ind} hover sx={{ cursor: "pointer" }}>
                           <TableCell>
@@ -63,9 +64,9 @@ const SecondUserTable = () => {
                               }
                             />
                           </TableCell>
-                          <TableCell align="center">{row.Id}</TableCell>
-                          <TableCell align="center">{row.Name}</TableCell>
-                          <TableCell align="center">{row.Team}</TableCell>
+                          <TableCell align="center">{row.id}</TableCell>
+                          <TableCell align="center">{row.name}</TableCell>
+                          <TableCell align="center">{row.team}</TableCell>
                           <TableCell align="center">
                             {row.Strategy_Type}
                           </TableCell>
@@ -74,7 +75,7 @@ const SecondUserTable = () => {
                           </TableCell>
                           <TableCell align="center">{row.Abbr}</TableCell>
                           <TableCell align="center">{row.Quantity}</TableCell>
-                          <TableCell align="center">{row.MtoM}</TableCell>
+                          <TableCell align="center">{row.Inst_Name}</TableCell>
                           <TableCell align="center">{row.MtoM}</TableCell>
                         </TableRow>
                       );

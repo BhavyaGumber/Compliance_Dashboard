@@ -14,7 +14,7 @@ const SwitchUserButton = () => {
   const selectedValueRef = useRef("");
 
   const dispatch = useDispatch();
-  // const selectedValue = useSelector((state) => state.selectedValue);
+  
 
   const [options,setOptions] = useState([])
   useEffect(()=>{
@@ -38,9 +38,10 @@ const fetchOptions = ()=>{
     .post('/fetch-data', { selectedValue })
 
     .then((response) => {
-      const { data } = response.data;
-      setData(data);
-      console.log(data.items);
+      const  data  = response.data.data.items;
+      // setData(data);
+      dispatch(dataSliceActions.addAbsentData(data));
+      console.log(data);
     })
     .catch((error) => {
       console.error('Error fetching data:', error);

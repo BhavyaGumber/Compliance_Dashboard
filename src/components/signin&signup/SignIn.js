@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import { useDispatch, useSelector} from "react-redux";
 
 import { dataSliceActions } from "../../store/dataSlice";
@@ -23,12 +24,7 @@ const SignIn = () => {
   const [loginError, setLoginError] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const users = [
-    { username: "2023", password: "123456" },
-    { username: "3782", password: "9132" },
-    { username: "2550", password: "1563" },
-    { username: "2260", password: "7853" },
-  ];
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -39,23 +35,18 @@ const SignIn = () => {
       .post('/login', { currentUser, currentPassword })
       .then((response) => {
         const responseData = response.data;
+        const uId = responseData.user.username;
        
-      
-        if (responseData.error) {
-        alert("error")
-        } else {
-            // const dispatch = useDispatch();
-            const userId = responseData.data[0]._id
-            console.log(userId)
-          dispatch(dataSliceActions.setUserId(userId));
+        localStorage.setItem("uId",uId);
+        
           
         
-          // Redirect to the dashboard page or display a success message
+         
           navigate("/dashboard")
-        }
+        }).
        
-      })
-      .catch((error) => {
+      
+      catch((error) => {
         alert("error")
       });
   };

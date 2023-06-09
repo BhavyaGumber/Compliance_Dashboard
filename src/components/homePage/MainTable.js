@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
+import axios from "axios";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -8,14 +9,34 @@ import TableRow from "@mui/material/TableRow";
 import Button from "@mui/material/Button";
 import Paper from "@mui/material/Paper";
 import TableHeaders from "./TableHeaders";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import "./MainTable.css";
+import { dataSliceActions } from "../../store/dataSlice";
 
 const MainTable = () => {
   const [inputValues, setInputValues] = useState([]);
+  const uId = localStorage.getItem("uId")
+  const [currentUserData, setCurrentUserData] = useState([]);const dispatch = useDispatch()
 
-  const BackEnd_Data = useSelector((state) => state.BackEnd_Data);
+  const mainTableData = useSelector(state=>state.MainTable_Data)
+  console.log(mainTableData)
+  const fetchDataHandler = () => {
+    axios
+      .post("/currentUser", { uId })
+      .then((response) => {
+        console.log(response)
+        const data = response.data.userData[0].items;
+        dispatch(dataSliceActions.addMainData(data));
+      
+      })
+      .catch((error) => {
+        alert("error");
+      });
+  };
+  useEffect(() => {
+    fetchDataHandler();
+  }, []);
 
   const handleInputChange = (index, field, value) => {
     const updatedValues = [...inputValues];
@@ -26,7 +47,7 @@ const MainTable = () => {
     setInputValues(updatedValues);
   };
   const handleSubmit = () => {
-    if (inputValues.length < BackEnd_Data.length) {
+    if (inputValues.length < currentUserData.length) {
       alert("Please fill in the values");
       return;
     }
@@ -42,15 +63,15 @@ const MainTable = () => {
     } else {
       const submittedData = inputValues.map((input, index) => {
         return {
-          Id: BackEnd_Data[index].Name,
-          Alloted_Abbr: BackEnd_Data[index].Abbr,
+          Id: currentUserData[index].Name,
+          Alloted_Abbr: currentUserData[index].Abbr,
           Executed_Abbr:
-            input?.Abbr !== undefined ? input?.Abbr : BackEnd_Data[index].Abbr,
-          Alloted_Qty: BackEnd_Data[index].Quantity,
+            input?.Abbr !== undefined ? input?.Abbr : currentUserData[index].Abbr,
+          Alloted_Qty: currentUserData[index].Quantity,
           Executed_Qty:
             input?.Quantity !== undefined
               ? input?.Quantity
-              : BackEnd_Data[index].Quantity,
+              : currentUserData[index].Quantity,
           MtoM: input?.MtoM,
         };
       });
@@ -71,7 +92,7 @@ const MainTable = () => {
             >
               <TableHeaders />
               <TableBody>
-                {BackEnd_Data.map((row, index) => {
+                {mainTableData.map((row, index) => {
                   return (
                     <TableRow hover key={index} sx={{ cursor: "pointer" }}>
                       <TableCell
@@ -80,10 +101,10 @@ const MainTable = () => {
                         padding="none"
                         align="center"
                       >
-                        {row.Id}
+                        {row.id}
                       </TableCell>
-                      <TableCell align="center">{row.Name}</TableCell>
-                      <TableCell align="center">{row.Team}</TableCell>
+                      <TableCell align="center">{row.name}</TableCell>
+                      <TableCell align="center">{row.team}</TableCell>
                       <TableCell align="center">{row.Strategy_Type}</TableCell>
                       <TableCell align="center">{row.Strategy_Name}</TableCell>
                       <TableCell align="center">{row.MtoM}</TableCell>
@@ -147,7 +168,7 @@ const MainTable = () => {
             }}
             variant="contained"
           >
-            Fech Data
+            Fetch Data
           </Button>
         </Link>
 
